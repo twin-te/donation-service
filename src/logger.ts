@@ -9,3 +9,4 @@ log4js.configure({
 
 export const logger = log4js.getLogger()
 export const grpcLogger = log4js.getLogger('grpc')
+export const schedulerLogger = log4js.getLogger('scheduler')
