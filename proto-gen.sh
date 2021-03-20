@@ -6,7 +6,7 @@ yarn pbjs \
   --no-decode \
   --path ../../ \
   --out ./generated/index.js \
-  ./protos/HelloService.proto \
+  ./protos/DonationService.proto \
 
 yarn pbts \
   --out ./generated/index.d.ts \

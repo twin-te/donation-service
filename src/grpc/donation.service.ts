@@ -1,8 +1,8 @@
 import { Status } from '@grpc/grpc-js/build/src/constants'
-import { GreetResponse, HelloService } from '../../generated'
+import { GreetResponse, DonationService } from '../../generated'
 import { GrpcServer } from './type'
 
-export const helloService: GrpcServer<HelloService> = {
+export const donationService: GrpcServer<DonationService> = {
   greet({ request }, callback) {
     if (!request.name)
       callback({ code: Status.INVALID_ARGUMENT, details: '名前が空です' })

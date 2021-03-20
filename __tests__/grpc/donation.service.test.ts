@@ -2,24 +2,24 @@ import { startGrpcServer, stopGrpcServer } from '../../src/grpc'
 import * as protoLoader from '@grpc/proto-loader'
 import path from 'path'
 import * as grpc from '@grpc/grpc-js'
-import { HelloService } from '../../generated'
+import { DonationService } from '../../generated'
 import { ServiceClientConstructor } from '@grpc/grpc-js/build/src/make-client'
 import { GrpcClient } from '../../src/grpc/type'
 import { Status } from '@grpc/grpc-js/build/src/constants'
 
 const def = protoLoader.loadSync(
-  path.resolve(__dirname, `../../protos/HelloService.proto`)
+  path.resolve(__dirname, `../../protos/DonationService.proto`)
 )
 const pkg = grpc.loadPackageDefinition(def)
-const ClientConstructor = pkg.HelloService as ServiceClientConstructor
-let client: GrpcClient<HelloService>
+const ClientConstructor = pkg.DonationService as ServiceClientConstructor
+let client: GrpcClient<DonationService>
 
 beforeAll(async () => {
   await startGrpcServer()
   client = (new ClientConstructor(
     'localhost:50051',
     grpc.ChannelCredentials.createInsecure()
-  ) as unknown) as GrpcClient<HelloService>
+  ) as unknown) as GrpcClient<DonationService>
 })
 
 test('greeting success', (done) => {

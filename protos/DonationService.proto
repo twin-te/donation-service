@@ -1,6 +1,6 @@
 syntax="proto3";
 
-service HelloService {
+service DonationService {
   rpc Greet(GreetRequest) returns (GreetResponse);
 }
 
