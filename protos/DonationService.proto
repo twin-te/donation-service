@@ -84,7 +84,8 @@ message ListSubscriptionResponse {
 }
 
 message UnsubscribeRequest {
-  string id = 1;
+  string userId = 1;
+  string id = 2;
 }
 
 message UnsubscribeResponse {}
@@ -97,13 +98,17 @@ message UpdatePaymentUserRequest {
 
 message UpdatePaymentUserResponse {}
 
-message GetTotalAmountRequest {}
+message GetTotalAmountRequest {
+  bool mandatory = 1;
+}
 
 message GetTotalAmountResponse {
   int32 total = 1;
 }
 
-message ListContributorsRequset {}
+message ListContributorsRequset {
+  bool mandatory = 1;
+}
 
 message Contributor {
   string displayName = 1;
@@ -111,5 +116,5 @@ message Contributor {
 }
 
 message ListContributorsResponse {
-  repeated Contributor contriburots = 1;
+  repeated Contributor contributors = 1;
 }
