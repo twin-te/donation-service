@@ -117,8 +117,8 @@ export const donationService: GrpcServer<DonationService> = {
     try {
       await updatePaymentUserUseCase(
         request.userId,
-        request.displayName,
-        request.link
+        request.displayName !== '' ? request.displayName : null,
+        request.link !== '' ? request.link : null
       )
       callback(null, UpdatePaymentUserResponse.create())
     } catch (e) {
