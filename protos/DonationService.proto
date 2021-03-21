@@ -1,13 +1,115 @@
 syntax="proto3";
 
 service DonationService {
-  rpc Greet(GreetRequest) returns (GreetResponse);
+  rpc CreateOneTimeCheckoutSession(CreateOneTimeCheckoutSessionRequest) returns (CheckoutSession);
+  rpc CreateSubscriptionCheckoutSession(CreateSubscriptionCheckoutSessionRequest) returns (CheckoutSession);
+
+  rpc ListPaymentHistory(ListPaymentHistoryRequest) returns (ListPaymentHistoryResponse);
+  rpc ListSubscription(ListSubscriptionRequest) returns (ListSubscriptionResponse);
+  rpc Unsubscribe(UnsubscribeRequest) returns (UnsubscribeResponse);
+
+  rpc UpdatePaymentUser(UpdatePaymentUserRequest) returns (UpdatePaymentUserResponse);
+
+  rpc GetTotalAmount(GetTotalAmountRequest) returns (GetTotalAmountResponse);
+  rpc ListContributors(ListContributorsRequset) returns (ListContributorsResponse);
 }
 
-message GreetRequest {
-  string name = 1;
+message CreateOneTimeCheckoutSessionRequest {
+  /* userId空文字で紐付けなしのセッションを作成できる */
+  string userId = 1;
+  int32 amount = 2;
 }
 
-message GreetResponse {
-  string text = 1;
+message CreateSubscriptionCheckoutSessionRequest {
+  /* userId必須 */
+  string userId = 1;
+  string planId = 2;
+}
+
+message CheckoutSession {
+  string id = 1;
+}
+
+message ListPaymentHistoryRequest {
+  string userId = 1;
+}
+
+enum PaymentType {
+  OneTime = 0;
+  Subscription = 1;
+}
+
+enum PaymentStatus {
+  Succeeded = 0;
+  Canceled = 1;
+  Pending = 2;
+}
+
+message Payment {
+  string id = 1;
+  PaymentType type = 2;
+  PaymentStatus status = 3;
+  int32 amount = 4;
+  string created = 5;
+}
+
+message ListPaymentHistoryResponse {
+  repeated Payment payments = 1;
+}
+
+message SubscriptionPlan {
+  string id = 1;
+  string name = 2;
+  int32 amount = 3;
+}
+
+enum SubscriptionStatus {
+  Active = 0;
+  Canceled = 1;
+}
+
+message Subscription {
+  string id = 1;
+  SubscriptionStatus status = 2;
+  repeated SubscriptionPlan plans = 3;
+  string created = 4;
+}
+
+message ListSubscriptionRequest {
+  string userId = 1;
+}
+
+message ListSubscriptionResponse {
+  repeated Subscription subscriptions = 1;
+}
+
+message UnsubscribeRequest {
+  string id = 1;
+}
+
+message UnsubscribeResponse {}
+
+message UpdatePaymentUserRequest {
+  string userId = 1;
+  string displayName = 2;
+  string link = 3;
+}
+
+message UpdatePaymentUserResponse {}
+
+message GetTotalAmountRequest {}
+
+message GetTotalAmountResponse {
+  int32 total = 1;
+}
+
+message ListContributorsRequset {}
+
+message Contributor {
+  string displayName = 1;
+  string link = 2;
+}
+
+message ListContributorsResponse {
+  repeated Contributor contriburots = 1;
 }
