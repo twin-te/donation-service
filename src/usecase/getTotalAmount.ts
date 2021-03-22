@@ -40,7 +40,7 @@ function delay(ms: number) {
   })
 }
 
-schedule.scheduleJob('* /10 * * * *', async () => {
+schedule.scheduleJob('*/15,45 * * * *', async () => {
   pending = updateData()
   await pending
   pending = undefined

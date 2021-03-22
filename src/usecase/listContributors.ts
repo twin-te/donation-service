@@ -35,4 +35,4 @@ async function updateData() {
   logger.info('寄付者一覧の更新完了')
 }
 
-schedule.scheduleJob('* /10 * * * *', () => updateData())
+schedule.scheduleJob('*/0,30 * * * *', () => updateData())
