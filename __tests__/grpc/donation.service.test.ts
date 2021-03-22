@@ -23,12 +23,16 @@ import { unsubscribeUseCase } from '../../src/usecase/unsubscribe'
 import { NotFoundError } from '../../src/error'
 import { getTotalAmountUseCase } from '../../src/usecase/getTotalAmount'
 import { listContributorUseCase } from '../../src/usecase/listContributors'
+import { findPaymentUserUseCase } from '../../src/usecase/findPaymentUser'
+import { updatePaymentUserUseCase } from '../../src/usecase/updatePaymentUser'
 
 jest.mock('../../src/usecase/createOneTimeCheckoutSession')
 jest.mock('../../src/usecase/createSubscriptionCheckoutSession')
 jest.mock('../../src/usecase/listPaymentHistory')
 jest.mock('../../src/usecase/listSubscription')
 jest.mock('../../src/usecase/unsubscribe')
+jest.mock('../../src/usecase/findPaymentUser')
+jest.mock('../../src/usecase/updatePaymentUser')
 jest.mock('../../src/usecase/getTotalAmount')
 jest.mock('../../src/usecase/listContributors')
 
@@ -378,6 +382,104 @@ describe('listContributors', () => {
       new Error('Unexpected Error')
     )
     client.listContributors({}, (err, res) => {
+      expect(err?.code).toBe(Status.UNKNOWN)
+      done()
+    })
+  })
+})
+
+describe('getPaymentUser', () => {
+  test('成功', (done) => {
+    mocked(findPaymentUserUseCase).mockImplementation(async (id) => {
+      expect(id).toEqual(userId)
+      return {
+        id: 'foo',
+        twinteUserId: id,
+        displayName: 'hoge',
+        link: 'fuga',
+      }
+    })
+    client.getPaymentUser({ userId }, (err, res) => {
+      expect(err).toBeNull()
+      expect(res).toEqual({
+        id: 'foo',
+        userId,
+        displayName: 'hoge',
+        link: 'fuga',
+      })
+      done()
+    })
+  })
+  test('失敗', (done) => {
+    mocked(findPaymentUserUseCase).mockRejectedValue(
+      new Error('Unexpected Error!')
+    )
+    client.getPaymentUser({ userId }, (err, res) => {
+      expect(err?.code).toBe(Status.UNKNOWN)
+      done()
+    })
+  })
+})
+
+describe('updatePaymentUser', () => {
+  test('成功', (done) => {
+    mocked(updatePaymentUserUseCase).mockImplementation(
+      async (id, displayName, link) => {
+        expect(id).toEqual(userId)
+        expect(displayName).toEqual('hoge')
+        expect(link).toEqual('fuga')
+        return {
+          id: 'foo',
+          twinteUserId: id,
+          displayName: 'hoge',
+          link: 'fuga',
+        }
+      }
+    )
+    client.updatePaymentUser(
+      { userId, displayName: 'hoge', link: 'fuga' },
+      (err, res) => {
+        expect(err).toBeNull()
+        expect(res).toEqual({
+          id: 'foo',
+          userId,
+          displayName: 'hoge',
+          link: 'fuga',
+        })
+        done()
+      }
+    )
+  })
+  test('成功 null', (done) => {
+    mocked(updatePaymentUserUseCase).mockImplementation(
+      async (id, displayName, link) => {
+        expect(id).toEqual(userId)
+        expect(displayName).toEqual(null)
+        expect(link).toEqual(null)
+        return {
+          id: 'foo',
+          twinteUserId: id,
+          displayName: null,
+          link: null,
+        }
+      }
+    )
+    client.updatePaymentUser({ userId }, (err, res) => {
+      expect(err).toBeNull()
+      expect(res).toEqual({
+        id: 'foo',
+        userId,
+        displayName: '',
+        link: '',
+      })
+      done()
+    })
+  })
+  test('失敗', (done) => {
+    mocked(updatePaymentUserUseCase).mockRejectedValue(
+      new Error('Unexpected Error!')
+    )
+    client.updatePaymentUser({ userId }, (err, res) => {
       expect(err?.code).toBe(Status.UNKNOWN)
       done()
     })

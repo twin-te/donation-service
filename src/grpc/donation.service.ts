@@ -11,9 +11,11 @@ import {
   UpdatePaymentUserResponse,
   GetTotalAmountResponse,
   ListContributorsResponse,
+  GetPaymentUserResponse,
 } from '../../generated'
 import { createOneTimeCheckoutSessionUseCase } from '../usecase/createOneTimeCheckoutSession'
 import { createSubscriptionCheckoutSessionUseCase } from '../usecase/createSubscriptionCheckoutSession'
+import { findPaymentUserUseCase } from '../usecase/findPaymentUser'
 import { getTotalAmountUseCase } from '../usecase/getTotalAmount'
 import { listContributorUseCase } from '../usecase/listContributors'
 import { listPaymentHistoryUseCase } from '../usecase/listPaymentHistory'
@@ -113,14 +115,38 @@ export const donationService: GrpcServer<DonationService> = {
       callback(toGrpcError(e))
     }
   },
+  async getPaymentUser({ request }, callback) {
+    try {
+      const user = await findPaymentUserUseCase(request.userId)
+      callback(
+        null,
+        GetPaymentUserResponse.create({
+          id: user.id,
+          userId: user.twinteUserId,
+          displayName: user.displayName,
+          link: user.link,
+        })
+      )
+    } catch (e) {
+      callback(toGrpcError(e))
+    }
+  },
   async updatePaymentUser({ request }, callback) {
     try {
-      await updatePaymentUserUseCase(
+      const user = await updatePaymentUserUseCase(
         request.userId,
         request.displayName !== '' ? request.displayName : null,
         request.link !== '' ? request.link : null
       )
-      callback(null, UpdatePaymentUserResponse.create())
+      callback(
+        null,
+        UpdatePaymentUserResponse.create({
+          id: user.id,
+          userId: user.twinteUserId,
+          displayName: user.displayName,
+          link: user.link,
+        })
+      )
     } catch (e) {
       callback(toGrpcError(e))
     }

@@ -8,6 +8,7 @@ service DonationService {
   rpc ListSubscription(ListSubscriptionRequest) returns (ListSubscriptionResponse);
   rpc Unsubscribe(UnsubscribeRequest) returns (UnsubscribeResponse);
 
+  rpc GetPaymentUser(GetPaymentUserRequest) returns (GetPaymentUserResponse);
   rpc UpdatePaymentUser(UpdatePaymentUserRequest) returns (UpdatePaymentUserResponse);
 
   rpc GetTotalAmount(GetTotalAmountRequest) returns (GetTotalAmountResponse);
@@ -90,13 +91,29 @@ message UnsubscribeRequest {
 
 message UnsubscribeResponse {}
 
+message GetPaymentUserRequest {
+  string userId = 1;
+}
+
+message GetPaymentUserResponse {
+  string id = 1;
+  string userId = 2;
+  string displayName = 3;
+  string link = 4;
+}
+
 message UpdatePaymentUserRequest {
   string userId = 1;
   string displayName = 2;
   string link = 3;
 }
 
-message UpdatePaymentUserResponse {}
+message UpdatePaymentUserResponse {
+  string id = 1;
+  string userId = 2;
+  string displayName = 3;
+  string link = 4;
+}
 
 message GetTotalAmountRequest {
   bool mandatory = 1;
