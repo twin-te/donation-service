@@ -5,6 +5,7 @@ import { logger, logger as schedulerLogger } from '../logger'
 import schedule from 'node-schedule'
 
 let cachedUsers: PaymentUser[] | undefined
+let pending: Promise<void> | undefined
 
 /**
  * 寄付してくれたユーザー一覧を取得
@@ -15,7 +16,7 @@ let cachedUsers: PaymentUser[] | undefined
 export async function listContributorUseCase(
   mandatory: boolean
 ): Promise<PaymentUser[]> {
-  if (mandatory || !cachedUsers) await updateData()
+  if ((mandatory || !cachedUsers) && !pending) await updateData()
   return cachedUsers!
 }
 
@@ -35,4 +36,15 @@ async function updateData() {
   logger.info('寄付者一覧の更新完了')
 }
 
-schedule.scheduleJob('*/0,30 * * * *', () => updateData())
+export let updateListContributorsJob: schedule.Job | undefined
+
+export function scheduleListContributorsUpdate() {
+  updateListContributorsJob = schedule.scheduleJob(
+    '*/0,30 * * * *',
+    async () => {
+      pending = updateData()
+      await pending
+      pending = undefined
+    }
+  )
+}

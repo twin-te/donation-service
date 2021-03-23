@@ -9,7 +9,6 @@ export async function getTotalAmountUseCase(
   mandatory: boolean
 ): Promise<number> {
   if ((mandatory || !cachedTotalAmount) && !pending) await updateData()
-  else if (pending) await pending
   return cachedTotalAmount!
 }
 
@@ -40,8 +39,12 @@ function delay(ms: number) {
   })
 }
 
-schedule.scheduleJob('*/15,45 * * * *', async () => {
-  pending = updateData()
-  await pending
-  pending = undefined
-})
+export let updateTotalAmountJob: schedule.Job | undefined
+
+export function scheduleTotalAmountUpdate() {
+  updateTotalAmountJob = schedule.scheduleJob('*/15,45 * * * *', async () => {
+    pending = updateData()
+    await pending
+    pending = undefined
+  })
+}
