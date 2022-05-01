@@ -51,7 +51,7 @@ message Payment {
   PaymentType type = 2;
   PaymentStatus status = 3;
   int32 amount = 4;
-  string created = 5;
+  int32 created = 5;
 }
 
 message ListPaymentHistoryResponse {
@@ -73,7 +73,7 @@ message Subscription {
   string id = 1;
   SubscriptionStatus status = 2;
   repeated SubscriptionPlan plans = 3;
-  string created = 4;
+  int32 created = 4;
 }
 
 message ListSubscriptionRequest {
