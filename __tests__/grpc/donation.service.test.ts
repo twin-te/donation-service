@@ -16,6 +16,7 @@ import { v4 } from 'uuid'
 import { Status } from '@grpc/grpc-js/build/src/constants'
 import { createSubscriptionCheckoutSessionUseCase } from '../../src/usecase/createSubscriptionCheckoutSession'
 import { listPaymentHistoryUseCase } from '../../src/usecase/listPaymentHistory'
+import dayjs from 'dayjs'
 import { deepContaining } from '../_deepContaining'
 import { listSubscriptionUseCase } from '../../src/usecase/listSubscription'
 import { unsubscribeUseCase } from '../../src/usecase/unsubscribe'
@@ -144,21 +145,21 @@ describe('listPaymentHistory', () => {
           invoice: null,
           status: 'succeeded',
           amount: 500,
-          created: 1651373136,
+          created: dayjs('2021-03-20').toDate().getTime(),
         },
         {
           id: 'bar',
           invoice: 'hoge',
           status: 'canceled',
           amount: 500,
-          created: 1654051536,
+          created: dayjs('2021-03-21').toDate().getTime(),
         },
         {
           id: 'hoge',
           invoice: null,
           status: 'requires_action',
           amount: 500,
-          created: 1680921936,
+          created: dayjs('2021-03-22').toDate().getTime(),
         },
       ]
     })
@@ -171,21 +172,21 @@ describe('listPaymentHistory', () => {
             type: PaymentType.OneTime,
             status: PaymentStatus.Succeeded,
             amount: 500,
-            created: 1651373136,
+            created: '2021-03-20T00:00:00.000Z',
           },
           {
             id: 'bar',
             type: PaymentType.Subscription,
             status: PaymentStatus.Canceled,
             amount: 500,
-            created: 1654051536,
+            created: '2021-03-21T00:00:00.000Z',
           },
           {
             id: 'hoge',
             type: PaymentType.OneTime,
             status: PaymentStatus.Pending,
             amount: 500,
-            created: 1680921936,
+            created: '2021-03-22T00:00:00.000Z',
           },
         ])
       )
@@ -219,7 +220,7 @@ describe('listSubscription', () => {
               },
             ],
           },
-          created: 1646102736,
+          created: dayjs('2021-03-21').toDate().getTime(),
         },
         {
           id: 'bar',
@@ -235,7 +236,7 @@ describe('listSubscription', () => {
               },
             ],
           },
-          created: 1649385936,
+          created: dayjs('2021-03-22').toDate().getTime(),
         },
       ]
     })
@@ -247,13 +248,13 @@ describe('listSubscription', () => {
             id: 'foo',
             status: SubscriptionStatus.Active,
             plans: [{ id: 'plan_foo', name: 'nickname_foo', amount: 500 }],
-            created: 1646102736,
+            created: '2021-03-21T00:00:00.000Z',
           },
           {
             id: 'bar',
             status: SubscriptionStatus.Canceled,
             plans: [{ id: 'plan_bar', name: 'nickname_bar', amount: 1000 }],
-            created: 1649385936,
+            created: '2021-03-22T00:00:00.000Z',
           },
         ])
       )

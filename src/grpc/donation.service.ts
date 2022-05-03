@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import {
   DonationService,
   CheckoutSession,
@@ -73,7 +74,7 @@ export const donationService: GrpcServer<DonationService> = {
                 ? PaymentStatus.Canceled
                 : PaymentStatus.Pending,
             amount: p.amount,
-            created: p.created,
+            created: dayjs(p.created).toISOString(),
           })),
         })
       )
@@ -98,7 +99,7 @@ export const donationService: GrpcServer<DonationService> = {
               name: i.plan.nickname,
               amount: i.plan.amount,
             })),
-            created: s.created,
+            created: dayjs(s.created).toISOString(),
           })),
         })
       )
