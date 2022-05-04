@@ -145,21 +145,21 @@ describe('listPaymentHistory', () => {
           invoice: null,
           status: 'succeeded',
           amount: 500,
-          created: dayjs('2021-03-20').toDate().getTime(),
+          created: dayjs('2021-03-20').unix(),
         },
         {
           id: 'bar',
           invoice: 'hoge',
           status: 'canceled',
           amount: 500,
-          created: dayjs('2021-03-21').toDate().getTime(),
+          created: dayjs('2021-03-21').unix(),
         },
         {
           id: 'hoge',
           invoice: null,
           status: 'requires_action',
           amount: 500,
-          created: dayjs('2021-03-22').toDate().getTime(),
+          created: dayjs('2021-03-22').unix(),
         },
       ]
     })
@@ -220,7 +220,7 @@ describe('listSubscription', () => {
               },
             ],
           },
-          created: dayjs('2021-03-21').toDate().getTime(),
+          created: dayjs('2021-03-21').unix(),
         },
         {
           id: 'bar',
@@ -236,7 +236,7 @@ describe('listSubscription', () => {
               },
             ],
           },
-          created: dayjs('2021-03-22').toDate().getTime(),
+          created: dayjs('2021-03-22').unix(),
         },
       ]
     })

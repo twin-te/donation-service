@@ -74,7 +74,7 @@ export const donationService: GrpcServer<DonationService> = {
                 ? PaymentStatus.Canceled
                 : PaymentStatus.Pending,
             amount: p.amount,
-            created: dayjs(p.created).toISOString(),
+            created: dayjs.unix(p.created).toISOString(),
           })),
         })
       )
@@ -99,7 +99,7 @@ export const donationService: GrpcServer<DonationService> = {
               name: i.plan.nickname,
               amount: i.plan.amount,
             })),
-            created: dayjs(s.created).toISOString(),
+            created: dayjs.unix(s.created).toISOString(),
           })),
         })
       )

@@ -23,7 +23,8 @@ export async function createSubscriptionCheckoutSessionUseCase(
         },
       ],
     },
-    success_url: process.env.STRIPE_CHECKOUT_SUCCESS_URL!,
+    success_url: `${process.env
+      .STRIPE_CHECKOUT_SUCCESS_URL!}?type=subscription&plan_id=${planId}`,
     cancel_url: process.env.STRIPE_CHECKOUT_CANCEL_URL!,
   })
   return session

@@ -31,7 +31,8 @@ export async function createOneTimeCheckoutSessionUseCase(
         quantity: 1,
       },
     ],
-    success_url: process.env.STRIPE_CHECKOUT_SUCCESS_URL!,
+    success_url: `${process.env
+      .STRIPE_CHECKOUT_SUCCESS_URL!}?type=onetime&amount=${amount}`,
     cancel_url: process.env.STRIPE_CHECKOUT_CANCEL_URL!,
   })
   return session
